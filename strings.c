@@ -26,7 +26,7 @@ int main()
 	char * token;
 	printf("%s\n", sent);
 	token = strtok(sent, " ");
-	while (token)
+	while (token!=NULL)
 	{
 		printf("%s\n", token);
 		token = strtok(NULL, " ");
