@@ -4,15 +4,21 @@
 void * my_thread(void* args);
 int main()
 {
-
-	pthread_t tid;
-	int label = 1;
+	const int THREADS = 3;
+	pthread_t tids[THREADS];
+	int label[THREADS] ;
+	
 	void * result;
-	printf("%lu\n", tid);
-	pthread_create(&tid, NULL, my_thread, (void *)&label);
-	printf("%lu\n", tid);
-	pthread_join(tid, &result);
-	printf("All done!%d\n", label);
+	//printf("%lu\n", tid);
+	for (int i=0; i<THREADS; i++)
+	{
+		label[i] = i;
+		pthread_create(&tids[i], NULL, my_thread, (void *)&label[i]);
+	}
+	//printf("%lu\n", tid);
+	for (int i=0; i<THREADS; i++)
+		pthread_join(tids[i], &result);
+	printf("All done!\n");
 	return 0;
 }
 
