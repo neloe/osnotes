@@ -33,6 +33,7 @@ int main()
 	printf("%s\n", strlist[0]);
 	printf("%c\n", **strlist);
 	printf("%s\n", *strlist);
+	printf("%x\n", *strlist);
 
 	for (int i=0; i<5; i++)
 		free(strlist[i]);
@@ -40,11 +41,15 @@ int main()
 
 	printf("Enter a size: ");
 	int num;
-	scanf("%d", &num);
+	//scanf("%d", &num);
 
 
 	int * userarr = malloc(num * sizeof(int));
 	free(userarr);
+
+	unsigned int ui = -1;
+	printf("%u\n", ui + 1);
+
 
 
 
