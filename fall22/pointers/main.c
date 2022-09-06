@@ -25,7 +25,9 @@ int main()
     printf("%p\n", dyn_arr);
     //printf("%d\n", *dyn_arr);
     dyn_arr=malloc(20 * sizeof(int));
+    dyn_arr[0] = 10;
     printf("%d\n", dyn_arr[0]);
+    free(dyn_arr);
     // &dyn_arr[0] == dyn_arr
     return 0;
 }
