@@ -7,7 +7,7 @@ int main()
 {
     srand(time(NULL));
     int randval;
-    for (int i=9; i>0; i-=1)
+    for (int i=12; i>0; i-=1)
     {
 	if (i%2 == 0)
 	    printf("%d\n", i);
