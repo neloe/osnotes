@@ -21,6 +21,9 @@ int main(int argc, char* argv[])
     intarr = malloc(5*sizeof(int));
     printf("arr[0]: %d\n", intarr[0]);// intarr + sizeof(int)*0 bytes;
 
+    free(intarr);
+    intarr = NULL;
+    free(intarr);
     printf("%d\n", xptr[0]);
     printf("%d\n", xptr[1]);
     printf("%d\n", *intarr);

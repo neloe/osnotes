@@ -21,7 +21,9 @@ int main(int argc, char* argv[])
     intarr = malloc(sizeof(int) * 5);
     printf("what's at index 0? %d\n", intarr[0]); // intarr + sizeof(int)*0
     printf("what's at index 1? %d\n", intarr[1]); // intarr + sizeof(int)*1
-
+    free(intarr);
+    intarr = NULL;
+    free(intarr);
     printf("xptr[0]: %d\n", xptr[0]);
     printf("xptr[1]: %d\n", xptr[1]);
     int i=0;
