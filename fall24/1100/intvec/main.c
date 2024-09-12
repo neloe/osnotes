@@ -10,6 +10,8 @@ int main(int argc, char* argv[])
     intvec_init(&myvec);
     intvec_add(&myvec, 10);
     intvec_get(myvec, 0, &thething);
+    printf("%d\n", thething);
 
+    intvec_free(&myvec);
     return 0;
 }
