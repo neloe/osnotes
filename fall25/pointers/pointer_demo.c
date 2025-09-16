@@ -32,7 +32,17 @@ int main(int argc, char* argv[])
   //printf("%d\n", array[4]);
   int * dyn_array;
   dyn_array = malloc(4 * sizeof(int));
+  printf("%x\n", dyn_array);
+  dyn_array[1] = 5;
+  printf("%d\n", dyn_array[1]);
+  free(dyn_array);
+  dyn_array = NULL;
+  printf("%x\n", dyn_array);
+  //printf("%d\n", dyn_array[1]);
   dyn_array = calloc(4, sizeof(int));
+  free(dyn_array);
+  dyn_array = NULL;
+  free(dyn_array);
 
   return 0;
 }
