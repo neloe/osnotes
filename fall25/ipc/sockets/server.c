@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <signal.h>
 int sockfd;
-
+int client;
 void cleanup(int sig);
 
 int main(int argc, char* argv[])
@@ -46,17 +46,32 @@ int main(int argc, char* argv[])
     exit(1);
   }
 
-  int client = accept(sockfd, NULL, NULL);
+  // 4. Accept connection from client
+  client = accept(sockfd, NULL, NULL);
   if (client == -1)
   {
     perror(argv[0]);
     exit(1);
   }
+  printf("Client connected. yay\n");
+
+  char message[256];
+  int read_bytes = recv(client, message, 256, 0);
+  if (read_bytes == 256)
+    message[255]=0;
+  else
+    message[read_bytes]=0;
+  printf("%d bytes read; %s\n", read_bytes, message);
+  read_bytes = recv(client, message, 256, 0);
+  printf("%d bytes read; %s\n", read_bytes, message);
+  close(client);
+  close(sockfd);
   return 0;
 }
 
 void cleanup(int sig)
 {
   close(sockfd);
+  close(client);
   exit(0);
 }
