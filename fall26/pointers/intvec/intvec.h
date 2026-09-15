@@ -4,6 +4,8 @@
 #ifndef INTVEC_H
 #define INTVEC_H
 
+#include <stddef.h>
+
 typedef struct {
   size_t num_elts, capacity;
   int * data;
