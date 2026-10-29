@@ -6,11 +6,19 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <pthread.h>
+#include <signal.h>
 
+int sock;
+char* in_buffer;
+
+void * read_thr(void * args);
+void signal_handler(int signum);
 
 int main(int argc, char* argv[])
 {
-  int sock = socket(AF_INET, SOCK_STREAM, 0);
+  signal(SIGINT, signal_handler);
+  sock = socket(AF_INET, SOCK_STREAM, 0);
   struct hostent * host;
   host = gethostbyname(argv[1]);
   if (host == NULL)
@@ -31,7 +39,36 @@ int main(int argc, char* argv[])
 	close(sock);
 	exit(1);
   }
-  write(sock, "Hello World!", strlen("Hello World!")+1);
-  close(sock);
+  //write(sock, "Hello World!", strlen("Hello World!")+1);
+  //close(sock);
+  pthread_t r;
+  void * result;
+  pthread_create(&r, NULL, read_thr, NULL);
+
+  in_buffer = calloc(256, sizeof(char));
+  size_t buflen = 256;
+  while(1)
+  {
+	int readin = getline(&in_buffer, &buflen, stdin);
+	write(sock, in_buffer, readin);
+  }
+  pthread_join(r, &result);
   return 0;
+}
+
+void * read_thr(void * args)
+{
+  char buffer[256];
+  while(1)
+  {
+	read(sock, buffer, 256);
+	printf("-- %s\n", buffer);
+  }
+}
+
+void signal_handler(int signum)
+{
+  close(sock);
+  free(in_buffer);
+  exit(1);
 }

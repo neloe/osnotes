@@ -6,10 +6,14 @@
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include <pthread.h>
+
 
 int sock;
 int client;
+char * buffer = NULL;
 
+void * read_thr(void * args);
 void interrupt_handler(int signum);
 
 int main(int argc, char* argv[])
@@ -41,16 +45,39 @@ int main(int argc, char* argv[])
 	exit(1);
   }
   client = accept(sock, NULL, NULL);
-  char data[256];
-  read(client, data, 256);
-  printf("Server got: %s\n", data);
-  close(client);
-  close(sock);
+  /*char data[256];
+	read(client, data, 256);
+	printf("Server got: %s\n", data);
+	close(client);
+	close(sock);*/
+  pthread_t r;
+  void * result;
+  pthread_create(&r, NULL, read_thr, NULL);
+
+  // Write to client
+  buffer = calloc(256, sizeof(char));
+  size_t buflen = 256;
+  while(1)
+  {
+	int readin = getline (&buffer,&buflen, stdin);
+	write(client, buffer, readin+1);
+  }
+  pthread_join(r, &result);
   return 0;
 }
 void interrupt_handler(int signum)
 {
   close(client);
   close(sock);
+  free(buffer);
   exit(1);
+}
+void * read_thr(void * args)
+{
+  char data[256];
+  while(1)
+  {
+	read(client, data, 256);
+	printf("-- %s\n", data);
+  }
 }
